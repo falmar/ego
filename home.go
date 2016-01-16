@@ -8,13 +8,24 @@ package main
 
 import (
 	"net/http"
+	"text/template"
 
 	"github.com/julienschmidt/httprouter"
 )
 
+// HomeContext Struct goes to the home template
+type HomeContext struct {
+	Title string
+	Text  string
+}
+
 // Home method or controller
 func Home(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	w.Write([]byte("Home - Hello World!"))
+	tpl, err := template.ParseFiles("templates/home.gohtml")
+	if err != nil {
+		return
+	}
+	tpl.Execute(w, HomeContext{Title: "Home", Text: "Hello World"})
 }
 
 // Home Models
