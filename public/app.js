@@ -1,0 +1,3 @@
+function scream() {
+    alert("hey!")
+}
