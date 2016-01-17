@@ -14,7 +14,7 @@ type ContactContext struct {
 	Post  *PostData
 }
 
-// PostData
+// PostData to store Post Data self explanatory (?)
 type PostData struct {
 	Name    string
 	Email   string
@@ -58,15 +58,13 @@ func ContactPost(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	post := &PostData{
-		Name:    r.PostFormValue("Contact[Name]"),
-		Email:   r.PostFormValue("Contact[Email]"),
-		Message: r.PostFormValue("Contact[Message]"),
-	}
-
 	tpl.Execute(w, ContactContext{
 		Title: "Contact Post",
 		Text:  "This is your data:",
-		Post:  post,
+		Post: &PostData{
+			Name:    r.PostFormValue("Contact[Name]"),
+			Email:   r.PostFormValue("Contact[Email]"),
+			Message: r.PostFormValue("Contact[Message]"),
+		},
 	})
 }
