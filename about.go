@@ -7,8 +7,8 @@
 package main
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
 
 	"github.com/julienschmidt/httprouter"
 )
