@@ -13,19 +13,13 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-// HomeContext Struct goes to the home template
-type HomeContext struct {
-	Title string
-	Text  string
-}
-
-// Home method or controller
+// Home Page
 func Home(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	tpl, err := template.ParseFiles("templates/home.gohtml")
 	if err != nil {
 		return
 	}
-	tpl.Execute(w, HomeContext{Title: "Home", Text: "Hello World"})
+	tpl.Execute(w, BasicContext{Title: "Home", Text: "Hello World"})
 }
 
 // Home Models
