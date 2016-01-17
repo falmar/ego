@@ -15,7 +15,7 @@ import (
 
 // About Page
 func About(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
+	var err error
 	tpl := template.New("about.gohtml")
 
 	tpl = tpl.Funcs(template.FuncMap{
@@ -24,7 +24,7 @@ func About(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		},
 	})
 
-	tpl, err := tpl.ParseFiles("templates/about.gohtml")
+	tpl, err = tpl.ParseFiles("templates/about.gohtml")
 
 	if err != nil {
 		w.Write([]byte(err.Error()))

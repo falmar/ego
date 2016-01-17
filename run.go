@@ -16,12 +16,14 @@ func main() {
 	router := httprouter.New()
 	router.GET("/", Home)
 	router.GET("/About", About)
+	router.GET("/Contact", Contact)
+	router.POST("/Contact", ContactPost)
 	router.ServeFiles("/src/*filepath", http.Dir("./public"))
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-// HomeContext Struct goes to the home template
+// BasicContext for templates
 type BasicContext struct {
 	Title string
 	Text  string
