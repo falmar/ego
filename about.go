@@ -24,7 +24,7 @@ func About(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		},
 	})
 
-	tpl, err = tpl.ParseFiles("templates/about.gohtml", "templates/inner.gohtml")
+	tpl, err = tpl.ParseFiles("templates/about.gohtml", "templates/inner.gohtml", "templates/menu.gohtml")
 
 	if err != nil {
 		w.Write([]byte(err.Error()))

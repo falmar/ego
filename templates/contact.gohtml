@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>{{.Title}}</title>
-  </head>
-  <body>
-    <p>
-      {{.Text}}
-    </p>
-    <!-- What-->
-    <form class="" action="/Contact" method="post">
-      <input type="text" name="Contact[Name]" value="{{.Post.Name}}" placeholder="Name"><br><br>
-      <input type="text" name="Contact[Email]" value="{{.Post.Email}}" placeholder="Email"><br>
-      <br>
-      <textarea name="Contact[Message]" rows="8" cols="40" placeholder="Message">{{.Post.Message}}</textarea><br><br>
-      <button type="submit">Submit</button>
-      <a href="/Contact">Cancel</a>
-    </form>
-  </body>
+</head>
+<body>
+{{template "menu.gohtml"}}
+<p>
+    {{.Text}}
+</p>
+<!-- What-->
+<form class="" action="/Contact" method="post">
+    <input type="text" name="Contact[Name]" value="{{.Post.Name}}" placeholder="Name">
+    <br><br>
+    <input type="text" name="Contact[Email]" value="{{.Post.Email}}" placeholder="Email">
+    <br> <br>
+    <textarea name="Contact[Message]" rows="8" cols="40" placeholder="Message">{{.Post.Message}}</textarea><br><br>
+    <button type="submit">Submit</button>
+    <a href="/Contact">Cancel</a>
+</form>
+</body>
 </html>

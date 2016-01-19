@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>{{.Title}}</title>
-  </head>
-  <body>
-    <p>
-      {{.Text}}:
-    </p>
-    <p>
-      {{MyFunc}}
-    </p>
-    {{template "inner.gohtml" "A Weirdo String"}}
-  </body>
+</head>
+<body>
+{{template "menu.gohtml"}}
+<p>
+    {{.Text}}:
+</p>
+<p>
+    {{MyFunc}}
+</p>
+{{template "inner.gohtml" "A Weirdo String"}}
+</body>
 </html>

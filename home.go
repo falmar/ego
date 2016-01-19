@@ -15,7 +15,7 @@ import (
 
 // Home Page
 func Home(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	tpl, err := template.ParseFiles("templates/home.gohtml")
+	tpl, err := template.ParseFiles("templates/home.gohtml", "templates/menu.gohtml")
 	if err != nil {
 		return
 	}
