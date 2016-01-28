@@ -5,7 +5,8 @@
     <title>{{.Title}}</title>
   </head>
   <body>
-    {{template "menu.gohtml"}}
+    Hello, {{.User.Name}}<br>
+    {{template "menu.gohtml" .User}}
     <h2>{{.Text}}</h2>
     <a href="/Create">Create Record</a>
     <br><br>

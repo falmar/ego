@@ -9,6 +9,7 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -31,9 +32,13 @@ func About(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	UserID, err := strconv.ParseInt(getSession(w, r).Get("user-id"), 10, 64)
+	User := getUser(UserID)
+
 	err = tpl.Execute(w, BasicContext{
 		Title: "About",
-		Text:  "Hello World from About! a Mysterios function will be executed below",
+		Text:  "Hello World from About! a Mysterious function will be executed below",
+		User:  User,
 	})
 
 	if err != nil {

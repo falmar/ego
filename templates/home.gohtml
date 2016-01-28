@@ -5,6 +5,8 @@
     <title>{{.Title}}</title>
 </head>
 <body>
-{{template "menu.gohtml"}} {{.Text}}
+  Hello, {{.User.Name}}<br>
+  {{template "menu.gohtml" .User}}
+  {{.Text}}
 </body>
 </html>

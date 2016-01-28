@@ -8,7 +8,9 @@ package main
 
 import (
 	"html/template"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -19,7 +21,19 @@ func Home(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err != nil {
 		return
 	}
-	tpl.Execute(w, BasicContext{Title: "Home", Text: "Hello World"})
+
+	UserID, err := strconv.ParseInt(getSession(w, r).Get("user-id"), 10, 64)
+	User := getUser(UserID)
+
+	err = tpl.Execute(w, BasicContext{
+		Title: "Home",
+		Text:  "Hello World",
+		User:  User,
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 // Home Models

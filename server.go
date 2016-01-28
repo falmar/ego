@@ -19,6 +19,7 @@ func main() {
 	router.GET("/Contact", Contact)
 	router.POST("/Contact", ContactPost)
 	setMySQLHandlers(router)
+	setLogHandlers(router)
 	router.ServeFiles("/src/*filepath", http.Dir("./public"))
 
 	log.Fatal(http.ListenAndServe(":8080", router))
@@ -28,4 +29,5 @@ func main() {
 type BasicContext struct {
 	Title string
 	Text  string
+	User  *User
 }

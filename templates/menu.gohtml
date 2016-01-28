@@ -1,3 +1,11 @@
 <p>
-    Menu: <a href="/">Home</a> | <a href="/About">About</a> | <a href="/Contact">Contact</a> | <a href="/MySQL">MySQL</a>
+    Menu: <a href="/">Home</a> |
+    <a href="/About">About</a> |
+    <a href="/Contact">Contact</a> |
+    <a href="/MySQL">MySQL</a> |
+    {{if .ID}}
+      <a href="/Logout">Logout</a>
+    {{else}}
+      <a href="/Login">Login</a>
+    {{end}}
 </p>

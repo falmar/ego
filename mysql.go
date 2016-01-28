@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"text/template"
 	"time"
 
@@ -66,10 +67,14 @@ func MySQL(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		Users = append(Users, *user)
 	}
 
+	UserID, err := strconv.ParseInt(getSession(w, r).Get("user-id"), 10, 64)
+	User := getUser(UserID)
+
 	err = tpl.Execute(w, MySQLContext{
 		Title: "MySQL Examples",
 		Text:  "MySQL - CRUD",
 		Users: Users,
+		User:  User,
 	})
 
 	if err != nil {
@@ -86,61 +91,41 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	tpl.Execute(w, BasicContext{Title: "Create MySQL Record", Text: "Insert a new record to User table"})
+	UserID, err := strconv.ParseInt(getSession(w, r).Get("user-id"), 10, 64)
+	User := getUser(UserID)
+
+	tpl.Execute(w, BasicContext{Title: "Create MySQL Record", Text: "Insert a new record to User table", User: User})
 }
 
 // Update a Record
 func Update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	ID := ps.ByName("ID")
+	ID, err := strconv.ParseInt(ps.ByName("ID"), 10, 64)
 
-	if ID == "" {
+	if err != nil {
 		http.Redirect(w, r, "/MySQL", http.StatusMovedPermanently)
 		return
 	}
 
-	db, err := getConn()
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer db.Close()
-
-	stmt, err := db.Prepare("SELECT Name, Email FROM User WHERE ID = ?")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer stmt.Close()
-
-	var Name, Email string
-
-	err = stmt.QueryRow(ID).Scan(&Name, &Email)
-
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
 	tpl, err := template.ParseFiles("templates/mysql/update.gohtml", "templates/menu.gohtml")
-
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
+	eUser := getUser(ID)
 
 	err = tpl.Execute(w, map[string]string{
 		"Title": "Update row",
 		"Text":  fmt.Sprintf("Update row # %v", ID),
-		"ID":    ID,
-		"Name":  Name,
-		"Email": Email,
+		"ID":    strconv.Itoa(int(eUser.ID)),
+		"Name":  eUser.Name,
+		"Email": eUser.Email,
 	})
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 }
 
 // Delete a Record
@@ -270,6 +255,7 @@ func getTimeStamp() string {
 type MySQLContext struct {
 	Title, Text string
 	Users       []User
+	User        *User
 }
 
 // User struct
@@ -277,4 +263,35 @@ type User struct {
 	ID             int64
 	Name, Email    string
 	RegisteredDate string
+}
+
+func getUser(UserID int64) *User {
+
+	User := &User{
+		Name: "Guest",
+	}
+
+	if UserID > 0 {
+
+		db, err := getConn()
+		if err != nil {
+			log.Println(err)
+		}
+		defer db.Close()
+
+		stmt, err := db.Prepare("SELECT Name,Email,RegisteredDate FROM User WHERE ID = ?")
+		if err != nil {
+			log.Println(err)
+		}
+		defer stmt.Close()
+
+		err = stmt.QueryRow(UserID).Scan(&User.Name, &User.Email, &User.RegisteredDate)
+		if err != nil {
+			log.Println(err)
+		}
+
+		User.ID = UserID
+	}
+
+	return User
 }

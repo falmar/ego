@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{.Title}}</title>
+  </head>
+  <body>
+    Hello, {{.User.Name}}<br>
+    {{template "menu.gohtml" .User}}
+    {{.Text}}
+    <br>
+    <form class="" action="Login" method="post">
+        <input type="text" name="Email" value="">
+        <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

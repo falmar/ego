@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -12,6 +13,7 @@ type ContactContext struct {
 	Title string
 	Text  string
 	Post  PostData
+	User  *User
 }
 
 // PostData to store Post Data self explanatory (?)
@@ -30,10 +32,14 @@ func Contact(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
+	UserID, err := strconv.ParseInt(getSession(w, r).Get("user-id"), 10, 64)
+	User := getUser(UserID)
+
 	err = tpl.Execute(w, ContactContext{
 		Title: "Contact",
 		Text:  "Contact us!",
 		Post:  *new(PostData),
+		User:  User,
 	})
 
 	if err != nil {
