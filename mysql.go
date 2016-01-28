@@ -23,7 +23,6 @@ func setMySQLHandlers(r *httprouter.Router) {
 	//Post Handlers
 	r.POST("/Create", CreateP)
 	r.POST("/Update/:ID", UpdateP)
-	r.POST("/Delete/:ID", DeleteP)
 }
 
 // MySQL Examples
@@ -146,7 +145,39 @@ func Update(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 // Delete a Record
 func Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	ID := ps.ByName("ID")
 
+	if ID == "" {
+		http.Redirect(w, r, "/MySQL", http.StatusMovedPermanently)
+		return
+	}
+
+	db, err := getConn()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("DELETE FROM User WHERE ID = ?")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer stmt.Close()
+
+	res, err := stmt.Exec(ID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if rws, err := res.RowsAffected(); rws <= 0 || err != nil {
+		log.Println("No Rows were affected")
+		return
+	}
+
+	http.Redirect(w, r, "/MySQL", http.StatusMovedPermanently)
 }
 
 // CreateP "Post" a new Record
@@ -225,11 +256,6 @@ func UpdateP(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	http.Redirect(w, r, "/MySQL", http.StatusMovedPermanently)
-}
-
-// DeleteP "Post" a Record
-func DeleteP(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
 }
 
 func getConn() (*sql.DB, error) {
