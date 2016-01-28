@@ -18,6 +18,7 @@ func main() {
 	router.GET("/About", About)
 	router.GET("/Contact", Contact)
 	router.POST("/Contact", ContactPost)
+	setMySQLHandlers(router)
 	router.ServeFiles("/src/*filepath", http.Dir("./public"))
 
 	log.Fatal(http.ListenAndServe(":8080", router))

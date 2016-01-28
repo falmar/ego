@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{.Title}}</title>
+  </head>
+  <body>
+    {{template "menu.gohtml"}}
+    <h2>{{.Text}}</h2>
+    <a href="/Create">Create Record</a>
+    <br><br>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>RegisteredDate</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Users}}
+          <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Name}}</td>
+            <td>{{.Email}}</td>
+            <td>{{.RegisteredDate}}</td>
+            <td><a href="/Update/{{.ID}}">Edit</a> | <a href="/Delete/{{.ID}}">Delete</a></td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="5">
+              No rows found.
+            </td>
+          </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </body>
+</html>
